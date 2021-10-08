@@ -1,4 +1,2 @@
 .vscode/settings.json
-task1/__pycache__/parallel_prexix_test.cpython-39.pyc
-task1/__pycache__/parallel_prefix_computation.cpython-39.pyc
-task2/__pycache__/checker.cpython-39.pyc
+*__pycache__
