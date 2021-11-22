@@ -116,6 +116,28 @@ def inverse(matr: np.array):
     return matr[:, n:]
 
 
+def inverse_triangular_mod2(matr: np.array):
+    """
+    Finds inverse matrix for upper triangular matrix over Z_2
+    @param: matr: np.array -- given matrix
+    """
+    n = matr.shape[0]
+    if n == 1 or n == 2:
+        return matr
+    else:
+        n_half = n // 2
+        b = matr[:n_half, :n_half]
+        c = matr[:n_half, n_half:]
+        d = matr[n_half:, n_half:]
+        res = np.zeros_like(matr)
+        b_inv = inverse_triangular_mod2(b)
+        d_inv = inverse_triangular_mod2(d)
+        res[:n_half, :n_half] = b_inv
+        res[n_half:, n_half:] = d_inv
+        res[:n_half, n_half:] = matrix_mult(matrix_mult(b_inv, c), d_inv)
+    return res
+
+
 def matrix_mult(a: np.array, b: np.array, p=2):
     """
     Computes matrix multiplication for given matrices a and b
@@ -157,7 +179,7 @@ def lup_decomposition(matrix: np.array, n: int, m: int):
         l_1, u_1, p_1 = lup_decomposition(b, n_half, m)
         d = matrix_mult(c, p_1.T)
         e, f = u_1[:, :n_half], d[:, :n_half]
-        e_inv = inverse(e)
+        e_inv = inverse_triangular_mod2(e)
         fe_inv = matrix_mult(f, e_inv)
         g = (d - matrix_mult(fe_inv, u_1)) % 2
         g_prime = g[:, -(m - n_half):]

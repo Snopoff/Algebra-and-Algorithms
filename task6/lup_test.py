@@ -4,15 +4,6 @@ import unittest
 
 
 class Test_TestLUPDecomposition(unittest.TestCase):
-    def test_is_lower_triangular_1(self):
-        matr = np.array([[1, 0, 0], [1, 1, 0], [1, 1, 1]])
-        res = l.is_lower_triangular(matr)
-        self.assertTrue(res)
-
-    def test_is_lower_triangular_2(self):
-        matr = np.array([[1, 0, 1], [1, 1, 0], [1, 1, 1]])
-        res = l.is_lower_triangular(matr)
-        self.assertFalse(res)
 
     def test_inverse_triangular_mod2_1(self):
         matr = np.identity(2)
@@ -20,13 +11,13 @@ class Test_TestLUPDecomposition(unittest.TestCase):
         np.testing.assert_array_equal(matr, res)
 
     def test_inverse_triangle_mod2_2(self):
-        matr = np.array([[1, 0], [1, 1]])
+        matr = np.array([[1, 0], [1, 1]]).T
         res = l.inverse_triangular_mod2(matr)
         np.testing.assert_array_equal(matr, res)
 
     def test_inverse_triangle_mod2_3(self):
         matr = np.array([[1, 0, 0, 0], [0, 1, 0, 0],
-                        [1, 0, 1, 0], [0, 0, 0, 1]])
+                        [1, 0, 1, 0], [0, 0, 0, 1]]).T
         res = l.inverse_triangular_mod2(matr)
         np.testing.assert_array_equal(matr, res)
 
@@ -37,7 +28,7 @@ class Test_TestLUPDecomposition(unittest.TestCase):
             [1, 1, 1, 0, 0],
             [1, 1, 1, 1, 0],
             [1, 1, 1, 1, 1]
-        ])
+        ]).T
         res = l.inverse_triangular_mod2(matr)
         np.testing.assert_array_equal(
             (res @ matr) % 2, np.identity(5, dtype=np.int32))
@@ -49,7 +40,7 @@ class Test_TestLUPDecomposition(unittest.TestCase):
                          [0, 1, 0, 1, 1, 0],
                          [0, 0, 0, 1, 1, 1],
                          [1, 1, 1, 0, 0, 1]])
-        matr = np.tril(matr)
+        matr = np.triu(matr)
         res = l.inverse_triangular_mod2(matr)
         exp = np.linalg.inv(matr)
         print(exp)
@@ -68,7 +59,7 @@ class Test_TestLUPDecomposition(unittest.TestCase):
                          [0, 1, 1, 0, 1, 1, 0, 1, 1, 1],
                          [0, 0, 1, 0, 1, 1, 1, 1, 1, 1],
                          [0, 0, 1, 1, 0, 0, 1, 1, 1, 1]])
-        matr = np.tril(matr)
+        matr = np.triu(matr)
 
         res = l.inverse_triangular_mod2(matr)
         np.testing.assert_array_equal(
